@@ -248,4 +248,3 @@ function ConfirmButton({
   );
 }
 
-export { ChevronDown };
