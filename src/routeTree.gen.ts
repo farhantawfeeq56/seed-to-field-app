@@ -10,33 +10,61 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EquipmentRouteImport } from './routes/equipment'
+import { Route as EquipmentIndexRouteImport } from './routes/equipment.index'
+import { Route as EquipmentEquipmentIdRouteImport } from './routes/equipment.$equipmentId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EquipmentRoute = EquipmentRouteImport.update({
+  id: '/equipment',
+  path: '/equipment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EquipmentIndexRoute = EquipmentIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EquipmentRoute,
+} as any)
+const EquipmentEquipmentIdRoute = EquipmentEquipmentIdRouteImport.update({
+  id: '/$equipmentId',
+  path: '/$equipmentId',
+  getParentRoute: () => EquipmentRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/equipment': typeof EquipmentRouteWithChildren
+  '/equipment/$equipmentId': typeof EquipmentEquipmentIdRoute
+  '/equipment/': typeof EquipmentIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/equipment/$equipmentId': typeof EquipmentEquipmentIdRoute
+  '/equipment': typeof EquipmentIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/equipment': typeof EquipmentRouteWithChildren
+  '/equipment/$equipmentId': typeof EquipmentEquipmentIdRoute
+  '/equipment/': typeof EquipmentIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/equipment' | '/equipment/$equipmentId' | '/equipment/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/equipment/$equipmentId' | '/equipment'
+  id:
+    '__root__' | '/' | '/equipment' | '/equipment/$equipmentId' | '/equipment/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EquipmentRoute: typeof EquipmentRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +76,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/equipment': {
+      id: '/equipment'
+      path: '/equipment'
+      fullPath: '/equipment'
+      preLoaderRoute: typeof EquipmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/equipment/': {
+      id: '/equipment/'
+      path: '/'
+      fullPath: '/equipment/'
+      preLoaderRoute: typeof EquipmentIndexRouteImport
+      parentRoute: typeof EquipmentRoute
+    }
+    '/equipment/$equipmentId': {
+      id: '/equipment/$equipmentId'
+      path: '/$equipmentId'
+      fullPath: '/equipment/$equipmentId'
+      preLoaderRoute: typeof EquipmentEquipmentIdRouteImport
+      parentRoute: typeof EquipmentRoute
+    }
   }
 }
 
+interface EquipmentRouteChildren {
+  EquipmentEquipmentIdRoute: typeof EquipmentEquipmentIdRoute
+  EquipmentIndexRoute: typeof EquipmentIndexRoute
+}
+
+const EquipmentRouteChildren: EquipmentRouteChildren = {
+  EquipmentEquipmentIdRoute: EquipmentEquipmentIdRoute,
+  EquipmentIndexRoute: EquipmentIndexRoute,
+}
+
+const EquipmentRouteWithChildren = EquipmentRoute._addFileChildren(
+  EquipmentRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EquipmentRoute: EquipmentRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
