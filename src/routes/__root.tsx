@@ -80,20 +80,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "FarmFleet — Request machinery from your CHC" },
+      { title: "FarmFleet — Machinery from your nearby CHC" },
       {
         name: "description",
         content:
-          "FarmFleet connects farmers with their nearby Custom Hiring Center to request tractors, rotavators and harvesters — even without internet.",
+          "See machines available at Green Harvest Custom Hiring Center, request a tractor in under a minute and track your request — works offline.",
       },
       { name: "author", content: "FarmFleet" },
-      { property: "og:title", content: "FarmFleet — Machinery from your CHC" },
+      { property: "og:title", content: "FarmFleet — Machinery from your nearby CHC" },
       {
         property: "og:description",
-        content: "Request farm machinery from Green Harvest Custom Hiring Center in one minute.",
+        content: "See machines available at Green Harvest Custom Hiring Center, request a tractor in under a minute and track your request — works offline.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "FarmFleet — Machinery from your nearby CHC" },
+      { name: "twitter:description", content: "See machines available at Green Harvest Custom Hiring Center, request a tractor in under a minute and track your request — works offline." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b0a2fe01-452b-43d8-846f-531acda14ab4/id-preview-4e683956--3e2332c9-45be-42ba-a692-1e8efce66966.lovable.app-1785905563833.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b0a2fe01-452b-43d8-846f-531acda14ab4/id-preview-4e683956--3e2332c9-45be-42ba-a692-1e8efce66966.lovable.app-1785905563833.png" },
     ],
     links: [
       {

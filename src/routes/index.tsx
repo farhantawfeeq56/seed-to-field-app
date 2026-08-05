@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "FarmFleet — Machinery from your nearby CHC" },
       {
         property: "og:description",
-        content: "Request tractors, rotavators and harvesters from your Custom Hiring Center.",
+        content: "See machines available at Green Harvest Custom Hiring Center, request a tractor in under a minute and track your request — works offline.",
       },
     ],
   }),
