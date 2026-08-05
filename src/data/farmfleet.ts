@@ -22,14 +22,14 @@ export interface MachineryRequest {
   machineName: string;
   submittedAt: string;
   preferredDate: string;
-  scheduledDate?: string;
+  scheduledDate?: string | undefined;
   status: RequestStatus;
-  landSize?: string;
-  notes?: string;
+  landSize?: string | undefined;
+  notes?: string | undefined;
   village: string;
   mobile: string;
   farmerName: string;
-  operator?: string;
+  operator?: string | undefined;
   timeline: TimelineEvent[];
   synced: boolean;
 }
@@ -44,7 +44,7 @@ export interface AppNotification {
   bodyTa: string;
   at: string;
   read: boolean;
-  requestId?: string;
+  requestId?: string | undefined;
 }
 
 export interface Farmer {

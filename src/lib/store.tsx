@@ -34,7 +34,7 @@ interface Persisted {
 const KEY = "farmfleet.state.v1";
 
 const freshState = (): Persisted => ({
-  farmerId: FARMERS[0].id,
+  farmerId: FARMERS[0]!.id,
   requests: seedRequests(),
   notifications: seedNotifications(),
   lang: "en",
@@ -78,8 +78,8 @@ export interface NewRequestInput {
   village: string;
   equipmentId: string;
   preferredDate: string;
-  landSize?: string;
-  notes?: string;
+  landSize?: string | undefined;
+  notes?: string | undefined;
 }
 
 const FarmFleetContext = createContext<Ctx | null>(null);
@@ -121,7 +121,7 @@ export function FarmFleetProvider({ children }: { children: ReactNode }) {
   const tr = useCallback((en: string, ta: string) => pick(state.lang, en, ta), [state.lang]);
 
   const farmer = useMemo(
-    () => FARMERS.find((f) => f.id === state.farmerId) ?? FARMERS[0],
+    () => FARMERS.find((f) => f.id === state.farmerId) ?? FARMERS[0]!,
     [state.farmerId],
   );
 
@@ -254,18 +254,18 @@ export function FarmFleetProvider({ children }: { children: ReactNode }) {
   );
 
   const advanceRequest = useCallback((id: string) => {
-    const order = ["pending", "approved", "scheduled", "completed"] as const;
+    const order: readonly ("pending" | "approved" | "scheduled" | "completed")[] = ["pending", "approved", "scheduled", "completed"];
     setState((s) => ({
       ...s,
       requests: s.requests.map((r) => {
         if (r.id !== id) return r;
         const i = order.indexOf(r.status as (typeof order)[number]);
         if (i < 0 || i === order.length - 1) return r;
-        const next = order[i + 1];
+        const next = order[i + 1]!;
         const at = new Date().toISOString();
         const timeline = [...r.timeline];
         const pendingIdx = timeline.findIndex((e) => !e.done);
-        if (pendingIdx >= 0) timeline[pendingIdx] = { ...timeline[pendingIdx], done: true, at };
+        if (pendingIdx >= 0) timeline[pendingIdx] = { ...timeline[pendingIdx]!, done: true, at };
         return {
           ...r,
           status: next,
@@ -342,7 +342,7 @@ export function FarmFleetProvider({ children }: { children: ReactNode }) {
           bodyTa: "ஓட்டுநர் அன்பரசு உங்கள் வேலையை கவனிப்பார்.",
         },
       ];
-      const s = samples[Math.floor(Math.random() * samples.length)];
+      const s = samples[Math.floor(Math.random() * samples.length)]!;
       pushNotification({
         ...s,
         id: `n-${Date.now()}`,
@@ -353,7 +353,7 @@ export function FarmFleetProvider({ children }: { children: ReactNode }) {
       toast(tr("New update added", "புதிய தகவல் சேர்க்கப்பட்டது"));
     },
     generateRequest: () => {
-      const eq = EQUIPMENT[Math.floor(Math.random() * EQUIPMENT.length)];
+      const eq = EQUIPMENT[Math.floor(Math.random() * EQUIPMENT.length)]!;
       createRequest({
         farmerName: farmer.name,
         mobile: farmer.mobile,
