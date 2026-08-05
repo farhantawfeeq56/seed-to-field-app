@@ -10,7 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EquipmentRouteImport } from './routes/equipment'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as RequestRouteImport } from './routes/request'
+import { Route as StatusRouteImport } from './routes/status'
 import { Route as EquipmentIndexRouteImport } from './routes/equipment.index'
 import { Route as EquipmentEquipmentIdRouteImport } from './routes/equipment.$equipmentId'
 
@@ -19,9 +23,29 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EquipmentRoute = EquipmentRouteImport.update({
   id: '/equipment',
   path: '/equipment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequestRoute = RequestRouteImport.update({
+  id: '/request',
+  path: '/request',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatusRoute = StatusRouteImport.update({
+  id: '/status',
+  path: '/status',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EquipmentIndexRoute = EquipmentIndexRouteImport.update({
@@ -37,34 +61,73 @@ const EquipmentEquipmentIdRoute = EquipmentEquipmentIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
   '/equipment': typeof EquipmentRouteWithChildren
+  '/notifications': typeof NotificationsRoute
+  '/request': typeof RequestRoute
+  '/status': typeof StatusRoute
   '/equipment/$equipmentId': typeof EquipmentEquipmentIdRoute
   '/equipment/': typeof EquipmentIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
+  '/notifications': typeof NotificationsRoute
+  '/request': typeof RequestRoute
+  '/status': typeof StatusRoute
   '/equipment/$equipmentId': typeof EquipmentEquipmentIdRoute
   '/equipment': typeof EquipmentIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
   '/equipment': typeof EquipmentRouteWithChildren
+  '/notifications': typeof NotificationsRoute
+  '/request': typeof RequestRoute
+  '/status': typeof StatusRoute
   '/equipment/$equipmentId': typeof EquipmentEquipmentIdRoute
   '/equipment/': typeof EquipmentIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/equipment' | '/equipment/$equipmentId' | '/equipment/'
+  fullPaths:
+    | '/'
+    | '/contact'
+    | '/equipment'
+    | '/notifications'
+    | '/request'
+    | '/status'
+    | '/equipment/$equipmentId'
+    | '/equipment/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/equipment/$equipmentId' | '/equipment'
+  to:
+    | '/'
+    | '/contact'
+    | '/notifications'
+    | '/request'
+    | '/status'
+    | '/equipment/$equipmentId'
+    | '/equipment'
   id:
-    '__root__' | '/' | '/equipment' | '/equipment/$equipmentId' | '/equipment/'
+    | '__root__'
+    | '/'
+    | '/contact'
+    | '/equipment'
+    | '/notifications'
+    | '/request'
+    | '/status'
+    | '/equipment/$equipmentId'
+    | '/equipment/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContactRoute: typeof ContactRoute
   EquipmentRoute: typeof EquipmentRouteWithChildren
+  NotificationsRoute: typeof NotificationsRoute
+  RequestRoute: typeof RequestRoute
+  StatusRoute: typeof StatusRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -76,11 +139,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/equipment': {
       id: '/equipment'
       path: '/equipment'
       fullPath: '/equipment'
       preLoaderRoute: typeof EquipmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/request': {
+      id: '/request'
+      path: '/request'
+      fullPath: '/request'
+      preLoaderRoute: typeof RequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/status': {
+      id: '/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof StatusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/equipment/': {
@@ -116,7 +207,11 @@ const EquipmentRouteWithChildren = EquipmentRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContactRoute: ContactRoute,
   EquipmentRoute: EquipmentRouteWithChildren,
+  NotificationsRoute: NotificationsRoute,
+  RequestRoute: RequestRoute,
+  StatusRoute: StatusRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

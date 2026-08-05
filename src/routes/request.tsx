@@ -1,6 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { CheckCircle2, ChevronRight, Phone, Tractor } from "lucide-react";
 import { toast } from "sonner";
@@ -9,10 +8,12 @@ import { useFarmFleet } from "@/lib/store";
 import { ContactButtons } from "@/components/farmfleet/ContactButtons";
 import { fmtDate } from "@/lib/format";
 
-const searchSchema = z.object({ machine: fallback(z.string(), "").default("") });
+const searchSchema = z.object({ machine: z.string().optional().catch("") });
 
 export const Route = createFileRoute("/request")({
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: (input: Record<string, unknown>) => ({
+    machine: searchSchema.parse(input).machine ?? "",
+  }),
   head: () => ({
     meta: [
       { title: "Request machinery — FarmFleet" },
@@ -60,11 +61,11 @@ function RequestPage() {
     e.preventDefault();
     const next: Record<string, string> = {};
     if (form.farmerName.trim().length < 2)
-      next.farmerName = tr("Please enter your name", "உங்கள் பெயரை உள்ளிடவும்");
+      next["farmerName"] = tr("Please enter your name", "உங்கள் பெயரை உள்ளிடவும்");
     if (!/^[+0-9 ]{10,16}$/.test(form.mobile.trim()))
-      next.mobile = tr("Enter a 10 digit mobile number", "10 இலக்க எண்ணை உள்ளிடவும்");
-    if (!form.village) next.village = tr("Choose your village", "உங்கள் ஊரை தேர்வு செய்யவும்");
-    if (!form.preferredDate) next.preferredDate = tr("Choose a date", "நாளை தேர்வு செய்யவும்");
+      next["mobile"] = tr("Enter a 10 digit mobile number", "10 இலக்க எண்ணை உள்ளிடவும்");
+    if (!form.village) next["village"] = tr("Choose your village", "உங்கள் ஊரை தேர்வு செய்யவும்");
+    if (!form.preferredDate) next["preferredDate"] = tr("Choose a date", "நாளை தேர்வு செய்யவும்");
     setErrors(next);
     if (Object.keys(next).length) {
       toast.error(tr("Please check the marked fields", "குறிக்கப்பட்ட இடங்களை சரிபார்க்கவும்"));
@@ -173,7 +174,7 @@ function RequestPage() {
           maxLength={60}
           onChange={(e) => set("farmerName", e.target.value)}
         />
-        <FieldError msg={errors.farmerName} />
+        <FieldError msg={errors["farmerName"]} />
       </div>
 
       <div>
@@ -189,7 +190,7 @@ function RequestPage() {
           maxLength={16}
           onChange={(e) => set("mobile", e.target.value)}
         />
-        <FieldError msg={errors.mobile} />
+        <FieldError msg={errors["mobile"]} />
       </div>
 
       <div>
@@ -208,7 +209,7 @@ function RequestPage() {
             </option>
           ))}
         </select>
-        <FieldError msg={errors.village} />
+        <FieldError msg={errors["village"]} />
       </div>
 
       <div>
@@ -255,7 +256,7 @@ function RequestPage() {
           value={form.preferredDate}
           onChange={(e) => set("preferredDate", e.target.value)}
         />
-        <FieldError msg={errors.preferredDate} />
+        <FieldError msg={errors["preferredDate"]} />
       </div>
 
       <div>
@@ -309,7 +310,7 @@ function RequestPage() {
   );
 }
 
-function FieldError({ msg }: { msg?: string }) {
+function FieldError({ msg }: { msg?: string | undefined }) {
   if (!msg) return null;
   return <p className="mt-1.5 text-base font-semibold text-destructive">{msg}</p>;
 }

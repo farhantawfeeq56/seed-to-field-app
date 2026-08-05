@@ -83,7 +83,6 @@ function StatusPage() {
 
       <Dialog open={!!open} onOpenChange={(v) => !v && setOpen(null)}>
         <DialogContent
-          showCloseButton={false}
           className="max-h-[85dvh] overflow-y-auto rounded-3xl p-5 sm:max-w-[420px]"
         >
           {open ? (
